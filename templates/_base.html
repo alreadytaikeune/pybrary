@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    {% load static %}
+
+    {% include "_header.html" %}
+
+    <body>
+
+        <div class="row">
+            {% block main %}{% endblock %}
+        </div>
+    </body>
+</html>
