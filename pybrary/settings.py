@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6usd8m*&a-2lpes2xrhvsh&s&=$@_n@iwo8cm!*t&(!ik@dl36'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -131,6 +131,7 @@ CONTENT_TYPES = ['application/pdf']
 MAX_FILE_SIZE=50*1024*1024
 
 import local_settings as ls
+from local_settings import SECRET_KEY
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
