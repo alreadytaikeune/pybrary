@@ -4,31 +4,85 @@
 {% load utils_extra %}
 {% block main %}
 
-<div class="col-lg-12" style="text-align:center">
-<h1>Results</h1>
+<script type="text/javascript">
+    function encodeQueryData(data) {
+       let ret = [];
+       for (let d in data)
+         ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+       return ret.join('&');
+    }
+
+    function filter(){
+        let res_type = document.getElementById("id_res_types");
+        let owner = document.getElementById("id_owners");
+        let url = window.location.href.split("?")[0] + "?";
+        let data = {};
+        if (res_type.value !== ""){
+            data["res_type"] = res_type.value;
+        }
+        if (owner.value !== ""){
+            data["owner"] = owner.value;
+        }
+        var querystring = encodeQueryData(data);
+        window.location.href = url + querystring; 
+    }
+    
+</script>
+
+<div class="row">
+    <div class="col-lg-12" style="text-align:center">
+    <h1>Results</h1>
+    </div>
 </div>
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-1">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Title</th>
-          <th>Authors</th>
-          <th>Type</th>
-          <th>Posted by</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for r in results %} 
+
+
+<div class="row" style="margin:50px">
+    <div class="col-lg-3" style="text-align:center">
+        {{ results.res_types.as_p }}
+   </div>
+   <div class="col-lg-3" style="text-align:center">
+        {{ results.owners.as_p }}
+   </div>
+
+   <div class="col-lg-3">
+   <button onclick="filter()">filter</button>
+   </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-1">
+        <table class="table">
+          <thead>
             <tr>
-            <th scope="row"> {{forloop.counter}}</th>
-            <td><a href="/resource/{{r.id}}/">{{ r|keyvalue:'title' }}</a></td>
-            <td>{{ r|keyvalue:'authors' }}</td>
-            <td>{{ r|keyvalue:'res_type' }}</td>
-            <td>{{ r|keyvalue:'owner' }}</td>
+              <th>#</th>
+              <th>Title</th>
+              <th>Authors</th>
+              <th>Type</th>
+              <th>Posted by</th>
             </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+          </thead>
+          <tbody>
+            {% for r in results.data %} 
+                <tr>
+                <th scope="row"> {{forloop.counter}}</th>
+                <td><a href="/resource/{{r.id}}/">{{ r|keyvalue:'title' }}</a></td>
+                <td>{{ r|keyvalue:'authors' }}</td>
+                <td>{{ r|keyvalue:'res_type' }}</td>
+                <td>{{ r|keyvalue:'owner' }}</td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-4" style="text-align:center">
+    {% if previous %}
+        <a href="{{previous}}"> << previous</a>
+    {% endif %}
+    {% if next %}
+        <a href="{{next}}"> next >></a>
+    {% endif %}
+    </div>
 </div>
 {% endblock %}

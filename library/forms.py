@@ -2,6 +2,7 @@
 from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
 
 from utils import slug
 
@@ -103,3 +104,11 @@ class ResourceForm(forms.ModelForm):
             self.save_m2m()
 
         return instance
+
+
+class ResourceTypeForm(forms.Form):
+    res_types = forms.ModelChoiceField(queryset=ResourceType.objects.all().order_by('name'))
+
+
+class OwnerForm(forms.Form):
+    owners = forms.ModelChoiceField(queryset=User.objects.all().order_by('username'))

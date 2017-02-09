@@ -15,13 +15,14 @@ from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView
 from rest_framework.parsers import BaseParser
 from rest_framework import mixins
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from django_filters.rest_framework import DjangoFilterBackend
 
 from utils.authentication import CsrfExemptSessionAuthentication
 
 from serializers import ResourceSerializer, UserSerializer
 
 from models import Resource
-from forms import ResourceForm
+from forms import ResourceForm, ResourceTypeForm, OwnerForm
 
 class LoginView(GenericAPIView):
     renderer_classes=(JSONRenderer, TemplateHTMLRenderer)
@@ -85,17 +86,23 @@ class ResourceListView(ListAPIView):
     serializer_class = ResourceSerializer
     renderer_classes=(JSONRenderer, TemplateHTMLRenderer)
     template_name = "index.html"
-
-    def get_queryset(self):
-        return Resource.objects.all().order_by("added_date")[:50]
+    queryset = Resource.objects.all().order_by("added_date")
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('owner', 'res_type')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            print serializer.data
-            return self.get_paginated_response(serializer.data)
+            data = serializer.data
+            for d in data:
+                d["authors"] = ", ".join([a["name"] for a in d["authors"]])
+            out_data = {}
+            out_data["res_types"] = ResourceTypeForm()
+            out_data["owners"] = OwnerForm()
+            out_data["data"] = data
+            return self.get_paginated_response(out_data)
 
         serializer = self.get_serializer(queryset, many=True)
         # print serializer.data

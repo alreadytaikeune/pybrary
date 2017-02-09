@@ -34,7 +34,7 @@ class Author(models.Model):
 class ResourceType(models.Model):
     class Meta:
         db_table = "resource_type"
-    name = models.CharField(verbose_name=_('name'), max_length=200)
+    name = models.CharField(verbose_name=_('name'), max_length=200, primary_key=True)
     slug_name = models.CharField(verbose_name=_('slug name'), max_length=200,
         default="")
     
@@ -49,7 +49,6 @@ class Tag(models.Model):
     class Meta:
         db_table = "tag"
     name = models.CharField(verbose_name=_('tag name'), max_length=200, unique=True)
-
     slug_name = models.CharField(verbose_name=_('slug_name'), max_length=200, unique=True,
         null=True, blank=True, default="")
 

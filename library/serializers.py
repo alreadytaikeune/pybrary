@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
@@ -10,7 +9,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
-        fields = '__all__'
+        fields = ["name"]
 
 
 class UserSerializer(serializers.ModelSerializer):
