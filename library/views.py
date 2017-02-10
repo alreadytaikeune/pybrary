@@ -165,7 +165,7 @@ class PDFParser(BaseParser):
 # @renderer_classes((JSONRenderer,))
 # @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 # @parser_classes((PDFParser,))
-@login_required()
+@login_required
 @csrf_exempt
 def upload_res(request):
     # print request.POST.title()

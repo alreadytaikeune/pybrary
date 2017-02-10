@@ -65,7 +65,7 @@
             {% for r in results.data %} 
                 <tr>
                 <th scope="row"> {{forloop.counter}}</th>
-                <td><a href="/resource/{{r.id}}/">{{ r|keyvalue:'title' }}</a></td>
+                <td><a href="resource/{{r.id}}/">{{ r|keyvalue:'title' }}</a></td>
                 <td>{{ r|keyvalue:'authors' }}</td>
                 <td>{{ r|keyvalue:'res_type' }}</td>
                 <td>{{ r|keyvalue:'owner' }}</td>
